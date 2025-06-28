@@ -9,9 +9,9 @@ motion_detected = False
 fan_state = "OFF"
 
 def fan_control(client1):
+    global fan_state
     if latest_temp > target_temp and motion_detected:
         fan_state = "ON"
-
         print(f"[FAN] Temp: {latest_temp}°C, Motion: {motion_detected} — Fan ON")
     else:
         fan_state = "OFF"

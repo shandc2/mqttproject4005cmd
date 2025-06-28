@@ -9,6 +9,7 @@ motion_detected = False
 heater_state = "OFF"
 
 def heater_control(client1):
+    global heater_state
     if latest_temp < target_temp and motion_detected:
         heater_state = "ON"
         print(f"[HEATER] Temp: {latest_temp}°C, Motion: {motion_detected} — HEATER ON")

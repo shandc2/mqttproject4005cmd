@@ -19,6 +19,8 @@ current_value = random.choice([False, True])
 bias = initial_bias
 step = 0
 
+client.publish("home/motion", current_value)
+
 while True:
     # Probabilities
     if current_value:
@@ -30,7 +32,6 @@ while True:
 
     next_value = random.choices([False, True], weights=[prob_0, prob_1])[0]
 
-    client.publish("home/motion", next_value)
     print(f"Step {step}: Picked {next_value} (bias={bias:.2f})")
     # print(f"[MotionSensor] Sent: {next_value})")
 
@@ -38,8 +39,11 @@ while True:
     if next_value != current_value:
         current_value = next_value
         bias = initial_bias  # reset bias
+        client.publish("home/motion", next_value) # changed to only publish when the state changes
+        print("Published")
     else:
         bias = max(min_bias, bias - decay_rate)  # decay toward 50/50
+        print("No change (Not published)")
 
     step += 1
     time.sleep(sleep_time)
